@@ -1,0 +1,181 @@
+/* :root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  place-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100vh;
+  background-color: white;
+}
+
+header {
+  height: 10vh;
+  min-width: 100%;
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+} */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  color-scheme: light dark;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424; /* Этот фон для корневого элемента */
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
+}
+a:hover {
+  color: #535bf2;
+}
+
+body {
+  margin: 0; /* Убираем стандартные отступы браузера */
+  padding: 0; /* Убираем стандартные внутренние отступы */
+  width: 100%; /* Убеждаемся, что body занимает всю ширину viewport */
+  min-height: 100vh; /* Убеждаемся, что body занимает всю высоту viewport */
+  /* УДАЛИТЕ СЛЕДУЮЩИЕ СТРОКИ: */
+  /* display: flex; */
+  /* place-items: center; */
+  /* justify-content: center; */
+  background-color: white; /* Или любой другой цвет фона для всей страницы */
+  box-sizing: border-box; /* Важно для корректного расчета размеров */
+}
+
+/* Если у вас есть #root, убедитесь, что он тоже занимает 100% ширины */
+#root {
+  width: 100%;
+  min-height: 100vh; /* Чтобы дочерние элементы могли растягиваться на всю высоту */
+  display: flex; /* Делаем #root flex-контейнером, если Header и main-content-wrapper - его прямые дети */
+  flex-direction: column; /* Элементы будут располагаться вертикально */
+  /* НЕ добавляйте сюда max-width и margin: 0 auto, если Header должен быть во всю ширину */
+}
+
+header {
+  height: 15vh;
+  width: 100%; /* Убеждаемся, что хедер занимает 100% ширины своего родителя (#root или body) */
+  /* min-width: 100%; - можно заменить на width: 100%; */
+  background-color: #333; /* Пример: добавьте сюда фон вашего хедера */
+  color: white; /* Пример: цвет текста хедера */
+  /* Остальные стили хедера из Header.tsx */
+}
+
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+button {
+  border-radius: 8px;
+  border: 1px solid transparent;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: #1a1a1a;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+button:hover {
+  border-color: #646cff;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    color: #213547;
+    background-color: #ffffff;
+  }
+  a:hover {
+    color: #747bff;
+  }
+  button {
+    background-color: #f9f9f9;
+  }
+}
+
+/* Обертка для основного контента, чтобы его можно было центрировать и ограничивать ширину */
+.main-content-wrapper {
+  /* Если вы добавили <main className="main-content-wrapper"> в App.tsx */
+  max-width: 1400px; /* Максимальная ширина для вашего грида и всего остального контента */
+  margin: 0 auto; /* Центрирует этот блок по горизонтали */
+  padding: 20px 0; /* Вертикальные отступы для контента */
+  flex-grow: 1; /* Позволяет этому блоку занять оставшееся вертикальное пространство */
+  box-sizing: border-box;
+}

@@ -1,0 +1,28 @@
+version: "3.8"
+
+services:
+  interactive-stand:
+    image: deafbeaver/backend-interactive-stand:latest
+    container_name: interactive-stand-container
+    depends_on:
+      - postgres
+    ports:
+      - "5154:8080"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Database=Host=postgres;Port=5432;Database=EnergySystem;Username=postgres;Password=miroshka
+      - DB_CONNECTION=Host=postgres;Port=5432;Database=EnergySystem;Username=postgres;Password=miroshka
+  postgres:
+    image: postgres:latest
+    container_name: postgres-container
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: miroshka
+      POSTGRES_DB: EnergySystem
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
