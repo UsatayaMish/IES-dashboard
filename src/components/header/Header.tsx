@@ -141,7 +141,7 @@ const Header: React.FC<HeaderProps> = ({ onDataReset }) => {
 
         {!isSimulationMode && <button onClick={handleReset}>Reset</button>}
 
-        {isSimulationMode && ( // Показываем элементы управления симуляцией только если общий режим симуляции активен
+        {isSimulationMode && (
           <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
             <span>Время: {currentTime}</span>
             <label htmlFor="speedFactorSelect">Шаг:</label>
@@ -162,16 +162,14 @@ const Header: React.FC<HeaderProps> = ({ onDataReset }) => {
 
             <button
               onClick={handleStartSimulation}
-              // Кнопка Start активна, только если симуляция не запущена
               disabled={isSimulationRunning}
               style={{ backgroundColor: "#28a745", color: "white" }}
             >
               Start
             </button>
-            {/* ИСПРАВЛЕНО: Единая кнопка Pause/Resume */}
+
             <button
               onClick={handleTogglePauseResume}
-              // Активна, если симуляция запущена
               disabled={!isSimulationRunning}
               style={{
                 backgroundColor: isSimulationPaused ? "#17a2b8" : "#ffc107",

@@ -1,21 +1,19 @@
 export interface RegionMetric {
   name: string;
-  id: number; // Соответствует UES.id
+  id: number;
   status: boolean;
-  producedEnergy: number; // Соответствует UES.producedCapacity
-  consumedEnergy: number; // Соответствует UES.consumedCapacity
+  producedEnergy: number;
+  consumedEnergy: number;
   firstCategoryDeficit: number;
   remainingDeficit: number;
-  // Источники энергии
-  npP_Percentage: number; // АЭС
-  hpP_Percentage: number; // ГЭС
-  cgpP_Percentage: number; // ТЭС
-  wpP_Percentage: number; // ВЭС
-  spP_Percentage: number; // СЭС
-  // Потребители
-  firstPercentage: number; // Первая категория
-  secondPercentage: number; // Вторая категория
-  thirdPercentage: number; // Третья категория
+  npP_Percentage: number;
+  hpP_Percentage: number;
+  cgpP_Percentage: number;
+  wpP_Percentage: number;
+  spP_Percentage: number;
+  firstPercentage: number;
+  secondPercentage: number;
+  thirdPercentage: number;
 
   timeZoneOffset: number;
 }

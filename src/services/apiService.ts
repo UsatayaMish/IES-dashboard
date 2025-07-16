@@ -3,7 +3,7 @@ import type { UES } from "../types/UES";
 import type { PowerSource } from "../types/PowerSourсe";
 
 export type PowerSourcePatchPayload = Partial<PowerSource> & {
-  id: number; // ID всегда должен быть, если мы обновляем конкретный ресурс
+  id: number;
   npP_capacity?: number;
   hpP_capacity?: number;
   cgpP_capacity?: number;

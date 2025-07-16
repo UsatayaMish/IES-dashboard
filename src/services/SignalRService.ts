@@ -3,7 +3,6 @@ import type { UES } from "../types/UES";
 import type { RegionMetric } from "../types/RegionMetric";
 import { regionMetricsToUES } from "../utils/dataTransformers";
 
-// Колбэки для различных типов обновлений
 type UESDataCallback = (data: UES[]) => void;
 type SimulationStatusCallback = (data: {
   status: string;
@@ -26,6 +25,7 @@ type ConnectionUpdateCallback = (
     receivedRemainingCapacity: number;
   }>
 ) => void;
+type NotificationCallback = (message: string) => void;
 
 class SignalRService {
   private connection: signalR.HubConnection | null = null;
@@ -34,6 +34,7 @@ class SignalRService {
   private currentTimeListeners: CurrentTimeCallback[] = [];
   private distributionUpdateListeners: DistributionUpdateCallback[] = [];
   private connectionUpdateListeners: ConnectionUpdateCallback[] = [];
+  private notificationListeners: NotificationCallback[] = [];
 
   constructor() {}
 
@@ -59,7 +60,6 @@ class SignalRService {
       .configureLogging(signalR.LogLevel.Information)
       .build();
 
-    // Обработчик для получения метрик регионов (основные данные UES)
     this.connection.on("ReceiveRegionMetrics", (data: RegionMetric[]) => {
       console.log("SignalR: Получены сырые данные RegionMetrics:", data);
       const transformedData = regionMetricsToUES(data);
@@ -67,7 +67,6 @@ class SignalRService {
       this.uesDataListeners.forEach((callback) => callback(transformedData));
     });
 
-    // Обработчик для получения статуса симуляции
     this.connection.on(
       "ReceiveSimulationStatus",
       (data: { status: string; message: string }) => {
@@ -76,13 +75,11 @@ class SignalRService {
       }
     );
 
-    // Обработчик для получения текущего времени симуляции
     this.connection.on("ReceiveCurrentTime", (data: { time: string }) => {
       console.log("ReceiveCurrentTime:", data);
       this.currentTimeListeners.forEach((callback) => callback(data));
     });
 
-    // Обработчик для получения обновлений распределения энергии
     this.connection.on(
       "ReceiveDistributionUpdate",
       (data: {
@@ -96,7 +93,6 @@ class SignalRService {
       }
     );
 
-    // Обработчик для получения обновлений статуса подключений
     this.connection.on(
       "ReceiveConnectionUpdate",
       (
@@ -116,7 +112,6 @@ class SignalRService {
       }
     );
 
-    // Обработчик для завершения симуляции
     this.connection.on("SimulationFinished", () => {
       console.log("SignalR: Симуляция завершена.");
       this.simulationStatusListeners.forEach((callback) =>
@@ -124,10 +119,16 @@ class SignalRService {
       );
     });
 
-    // Обработчик закрытия соединения
+    this.connection.on("EspUpdated", (message: string) => {
+      console.log(
+        "SignalR: Получено текстовое уведомление (EspUpdated):",
+        message
+      );
+      this.notificationListeners.forEach((callback) => callback(message));
+    });
+
     this.connection.onclose(async (error?: Error) => {
       console.error("SignalR: Соединение закрыто:", error);
-      // Автоматический реконнект уже настроен, но можно добавить дополнительную логику
     });
 
     try {
@@ -135,8 +136,6 @@ class SignalRService {
       console.log("SignalR: Подключено к хабу.");
     } catch (err) {
       console.error("SignalR: Ошибка подключения:", err);
-      // Если автоматический реконнект не справляется, можно попробовать ручной
-      // setTimeout(() => this.connect(hubUrl), 5000);
     }
   }
 
@@ -154,8 +153,6 @@ class SignalRService {
     }
     this.connection = null;
   }
-
-  // --- Методы подписки на данные ---
 
   public subscribeToUESData(callback: UESDataCallback): () => void {
     this.uesDataListeners.push(callback);
@@ -208,7 +205,18 @@ class SignalRService {
       );
     };
   }
+
+  public subscribeToNotifications(callback: NotificationCallback): () => void {
+    this.notificationListeners.push(callback);
+    return () => {
+      this.notificationListeners = this.notificationListeners.filter(
+        (listener) => listener !== callback
+      );
+    };
+  }
 }
 
 const signalRService = new SignalRService();
+signalRService.connect("http://localhost:5154/energyHub");
+
 export default signalRService;

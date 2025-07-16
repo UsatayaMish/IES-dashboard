@@ -3,7 +3,6 @@
   display: grid;
   width: 90vw;
   height: 80vh;
-  /* border: 1px solid blue; */
   gap: 10px;
 
   grid-template-areas:
